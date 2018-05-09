@@ -3,9 +3,9 @@
 var url = require('url');
 var tinyCookie = require('tiny-cookie');
 
-module.exports = function TrackingSwitch(successPath) {
+module.exports = function TrackingSwitch(successPathRegExp) {
   var self = this;
-  this.successPath = successPath;
+  this.successPathRegExp = successPathRegExp;
   this.currentUrl = url.parse(window.location.href, true);
 
   var canExecute = function () {
@@ -17,7 +17,7 @@ module.exports = function TrackingSwitch(successPath) {
       return;
     }
 
-    if (this.currentUrl.path === this.successPath) {
+    if (this.currentUrl.path.match(this.successPathRegExp)) {
       tinyCookie.remove('fond_of_tracking');
       return;
     }
